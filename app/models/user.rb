@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
   include Tokenable
-  validates_presence_of :email, :password, :full_name
+  validates_presence_of :email, :full_name
+  validates_presence_of :password, on: :create
   validates_uniqueness_of :email
+  validates_length_of :full_name, in: 3..25
   has_many :reviews, -> { order("created_at DESC") }
   has_many :queue_items, -> { order(:list_order) }
   has_many :invitations, foreign_key: :inviter_id
@@ -43,6 +45,14 @@ class User < ActiveRecord::Base
   
   def deactivate!
     update_column(:active, false)
+  end
+  
+  def next_billing_date
+    self.payments.last.created_at + 1.month
+  end
+  
+  def previous_billing_date
+    self.payments.last.created_at
   end
   
   #def generate_token
