@@ -1,9 +1,14 @@
 class BillingsController < ApplicationController
-  before_filter :require_user, only: [:show]
+  before_filter :require_user
   before_filter :find_user
   
-  def show
-    @billing = Payment.find(params[:payment])
+  def unsubscribe
+    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+    customer = Stripe::Customer.retrieve(@user.customer_token)
+    customer.subscriptions.retrieve(@user.payment.reference_id).delete.at_period_end
+    @user.unsubscribe
+    flash[:danger] = "Your MyFlix subscription has been cancelled. We hope you will come back soon."
+    redirect_to home_path
   end
   
   private

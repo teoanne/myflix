@@ -47,12 +47,20 @@ class User < ActiveRecord::Base
     update_column(:active, false)
   end
   
+  def active
+    update_column(:active, true)
+  end
+  
   def next_billing_date
     self.payments.last.created_at + 1.month
   end
   
   def previous_billing_date
     self.payments.last.created_at
+  end
+  
+  def unsubscribe
+    update_column(:active, false) #user deactivated equals true?
   end
   
   #def generate_token

@@ -9,4 +9,8 @@ StripeEvent.configure do |events|
     user = User.where(customer_token: event.data.object.customer).first 
     user.deactivate!
   end
+  events.subscribe 'customer.subscription.deleted' do |event|
+    user = User.where(customer_token: event.data.object.customer).first
+    #user.deactivate! #question, do i need to deactivate here too or only in the billings controller? 
+  end
 end
