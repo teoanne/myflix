@@ -5,8 +5,9 @@ class BillingsController < ApplicationController
   def unsubscribe
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     customer = Stripe::Customer.retrieve(@user.customer_token)
-    customer.subscriptions.retrieve(@user.payment.reference_id).delete.at_period_end
+    customer.subscriptions.retrieve(@user.payments.last.reference_id).delete #to retrieve the latest payment
     @user.unsubscribe
+    # add an AppMailer
     flash[:danger] = "Your MyFlix subscription has been cancelled. We hope you will come back soon."
     redirect_to home_path
   end

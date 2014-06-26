@@ -30,7 +30,6 @@ Myflix::Application.routes.draw do
   resources :forgot_passwords, only: [:create]
   resources :password_resets, only: [:show, :create]
   resources :invitations, only: [:new, :create]
-  resources :billings, only: [:show]
   
   get '/home', to: 'videos#index'
   get '/login', to: 'sessions#new'
@@ -46,7 +45,7 @@ Myflix::Application.routes.draw do
   get '/forgot_password_confirmation', to: 'forgot_passwords#confirm'
   get '/invalid_token', to: 'pages#invalid_token'
   get '/billing', to: 'users#billing'
-  get '/unsubscribe', to: 'billing#unsubscribe'
+  post '/unsubscribe', to: 'billing#unsubscribe'
   
   mount StripeEvent::Engine => '/stripe_events'
 
