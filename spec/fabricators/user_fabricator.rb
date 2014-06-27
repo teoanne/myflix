@@ -4,7 +4,7 @@ Fabricator(:user) do
   password 'password'
   admin false
   active true
-  customer_token 'abcdefg'
+  customer_token "abcdefg"
 end
 
 Fabricator(:admin, from: :user) do

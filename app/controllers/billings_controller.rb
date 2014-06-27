@@ -1,8 +1,8 @@
 class BillingsController < ApplicationController
   before_filter :require_user
-  before_filter :find_user
   
   def unsubscribe
+    @user = current_user
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
     customer = Stripe::Customer.retrieve(@user.customer_token)
     customer.subscriptions.retrieve(@user.payments.last.reference_id).delete #to retrieve the latest payment
