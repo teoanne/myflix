@@ -64,12 +64,4 @@ describe User do
       expect(jane).not_to be_active
     end
   end
-  
-  describe "#unsubscribed?" do
-    it "unsubscribes the user from MyFlix" do
-      jane = Fabricate(:user, active: true)
-      jane.deactivate!
-      expect(jane.unsubscribe?).to be_true
-    end
-  end
 end
